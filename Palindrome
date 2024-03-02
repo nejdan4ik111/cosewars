@@ -1,0 +1,35 @@
+#include <iostream>
+#include <string>
+#include <algorithm>
+#include <map>
+
+unsigned int longestPalindrome(const std::string& str) {
+    std::unordered_map<char, int> charCount;
+    int evenSum = 0;
+    int oddMax = 0;
+
+    if (str.empty()) {
+        return 0;
+    }
+    if (str.size() == 1) {
+        return 1;
+    }
+    std::string lowerCaseStr = str;
+    std::transform(lowerCaseStr.begin(), lowerCaseStr.end(), lowerCaseStr.begin(), tolower);
+
+    for (char c : lowerCaseStr) {
+        if ((c <= 'z' && c >= 'a') || (c <= '9' && c >= '0'))
+            charCount[c]++;
+    }
+
+    for (const auto& key : charCount) {
+        if (key.second % 2 == 0) {
+            evenSum += key.second;
+        }
+        if (key.second % 2 != 0 && key.second > oddMax) {
+            oddMax = key.second;
+        }
+    }
+
+    return evenSum + oddMax;
+}
